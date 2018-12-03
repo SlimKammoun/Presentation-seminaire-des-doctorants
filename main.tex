@@ -1,0 +1,823 @@
+\documentclass[french]{beamer}
+\usepackage[round]{natbib}
+
+\usepackage{pgfpages}
+%\setbeameroption{show notes}
+%\setbeameroption{show notes on second screen=right}
+\mode<presentation> {
+  \usetheme{Madrid}
+  % ou autre ...
+
+  \setbeamercovered{transparent}
+  % ou autre chose (il est également possible de supprimer cette ligne)
+}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollaire}[theorem]{Corollaire}
+\usepackage{calc}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{babel}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{amsfonts}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage[vcentermath]{youngtab}
+%\pgfdeclareimage[height=0.5cm]{le-logo}{logo-irisa}
+%\logo{\pgfuseimage{le-logo}}
+\setbeamertemplate{footline}[frame number]
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\usepackage{fourier, heuristica}
+\usepackage{array, booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\usepackage{caption}
+\DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
+
+\newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Universalité pour les sous-suites croissantes de permutations aléatoires}
+
+\subtitle {Forum Jeunes Mathématiciennes et Mathématiciens}
+\author 
+{ \large{Mohamed Slim Kammoun}
+\\ \small{Université de Lille} \\ \ \\ \large{Directeurs de thèse :  Mylène Maïda  et Adrien Hardy}}
+\date { 30 November 2018}
+\titlegraphic{
+\includegraphics[height=0.9cm]{l1}
+   \includegraphics[height=0.9cm]{0}
+   \includegraphics[height=0.9cm]{l6}
+   
+}
+
+\usepackage{xcolor}
+\newcommand\ytl[2]{
+\parbox[b]{5em}{\hfill{\color{cyan}\bfseries\sffamily #1}~$\cdots\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{5.5cm}{\vspace{7pt}\color{red!40!black!80}\raggedright\sffamily #2.\\[7pt]}\\[-3pt]}
+\newcommand{\s}{\mathfrak{S}_n}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage  
+\end{frame}
+
+
+
+\section*{Introduction}
+\begin{frame}{Introduction}
+     Permutations aléatoires : 
+\begin{itemize}
+    \item Distributions : loi uniforme, Ewens, Mallows, permutations virtuelles, Kingman etc.
+    \item Objets combinatoires : nombre de cycles, longueurs des cycles, points fixes, \textit{\textbf{suites monotones}}, \textit{\textbf{correspondance de Robinson-Schensted}}, \textit{suites communes}, \textit{descentes},  etc.
+    \item Applications : biologie, combinatoire, processus de coalescence, classification etc. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction}
+Universalité pour les processus ponctuels (déterminantaux) :
+\begin{itemize}
+    \item Particule plus à gauche (droite) : distribution de Tracy-Widom.
+    \item Au bord : processus de Airy.
+    \item Convergence globale : loi semi-circulaire de Wigner.
+    \item Dans le  "bulk" : processus sinus (discret).
+
+
+\end{itemize}
+\end{frame}
+
+%\begin{frame}{Universalité}
+
+
+%\begin{table}
+%\small{}
+%\caption{Historique}
+%\centering
+%\begin{minipage}[t]{.7\linewidth}
+%\color{gray}
+%\rule{\linewidth}{1pt}
+%\ytl{1950's}{Travaux de Wigner}
+%\ytl{1963}{Wigner : Prix Nobel}
+%\ytl{1970}{Discussion de Dyson-Montgomery : Zéros de $\zeta$ }
+%\ytl{1990's}{Matrices aléatoires, universalité de Tao et Vu}
+%\ytl{1999}{Travaux de Baik, Deift et Johansson}
+%\ytl{2000's}{Modèles discrets}
+%\ytl{2010's}{Applications : télécom, statistiques, apprentissage automatique etc.}
+%\bigskip
+%\rule{\linewidth}{1pt}%
+%\end{minipage}%
+%\end{table}    
+%\end{frame}
+\begin{frame}{Plan}
+     \tableofcontents[
+    hideothersubsections, 
+    sectionstyle=show,
+]
+\end{frame}
+
+
+
+\section{Objects combinatoires}
+\begin{frame}{Plan}
+\tableofcontents[currentsection,currentsubsection,
+    hideothersubsections, 
+    sectionstyle=show/shaded,
+]
+\end{frame}
+
+\subsection{Plus longue sous-suite croissante}
+\begin{frame}{Plus longue sous-suite croissante}
+\begin{itemize}
+
+\item $\mathfrak{S_n}$ :  groupe symétrique d'ordre $n$ (l'ensemble des permutations de $\{1,2,\dots,n\}$).
+\\ 
+\item $i_1<i_2<\dots<i_k$ est une sous-suite croissante de longueur $k$ si $\sigma(i_1)<\sigma(i_2)\dots<\sigma(i_k)$.
+
+\item $\ell(\sigma)$ : longueur de la plus longue sous-suite croissante.
+\item Exemple : $$\sigma = \begin{pmatrix} 
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+3 & 8 & 1 & 2 & 4 & 7 & 5 & 6
+  \end{pmatrix}.$$
+$\ell(\sigma)=5$.
+
+\end{itemize}
+\end{frame}
+\subsection{Correspondance de Robinson-Schensted}
+
+\begin{frame}{Tableaux de Young}
+   \begin{definition}[Diagramme de Young]
+   $\lambda=(\lambda_i)_{i\geq1} \in \mathbb{N}^{\mathbb{N}^*}$ est un diagramme de Young de taille $n$ si 
+   \begin{itemize}
+       \item $\forall i\geq1, \  \lambda_{i+1}\leq \lambda_i$,
+       \item $\sum_{i=1}^\infty \lambda_i=n$.
+   \end{itemize}
+   \end{definition}
+   \vspace{10 mm}
+
+   Exemple : les diagrammes de Young de taille 3 sont $\mathbb{Y}_3=(3,\underline{0}),(2,1,\underline{0}),(1,1,1,\underline{0})$
+   \\   ou$\left(\yng(3),\yng(2,1),\yng(1,1,1)\right)$.
+   
+ 
+\end{frame}
+\begin{frame}{Tableau de Young}
+    \begin{definition}[Tableau de Young]
+    Un tableau de Young de forme $\lambda$ est un remplissage strictement croissant sur chaque ligne et chaque colonne du diagramme de Young $\lambda$ en utilisant les entrées $\{1,2,\dots,n\}$. 
+    \end{definition}
+    \begin{itemize}
+        \item     Exemple : les tableaux de Young de forme $\yng(3,1)$ sont $\young(123,4),\young(124,3),\young(134,2)$. 
+    \item$dim(\lambda)=$ \# tableau de Young de forme $\lambda$. 
+    \item Exemple : $dim\left(\yng(3,1)\right)=3$.
+    \item $dim(\lambda) = $   dimension de  la représentation irréductible du groupe symétrique indexée par $\lambda$.
+    \end{itemize}
+ \end{frame}
+
+
+\begin{frame}{Correspondance de Robinson-Schensted}
+\begin{itemize}
+    \item Bijection entre les permutations de $\mathfrak{S_n}$ et les paires de  tableaux de Young de même forme. 
+    \item On note $\lambda(\sigma):=(\lambda_i(\sigma))_{i\geq1}$ la forme de l'image de $\sigma$ par cette correspondance. 
+    \item $\ell(\sigma)=\lambda_1(\sigma)$
+\end{itemize}    
+\end{frame}
+\begin{frame}{Construction géométrique de Viennot}
+$$\sigma = \begin{pmatrix} 
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+3 & 8 & 1 & 2 & 4 & 7 & 5 & 6
+  \end{pmatrix}.$$
+
+ \begin{overprint}
+   \onslide<1> 
+
+  \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+
+
+   \onslide<2> 
+   
+  \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+\draw [fill=cyan,cyan] (1,3) rectangle (10,10);
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+
+   
+   \onslide<3>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+\draw [fill=cyan,cyan] (1,3) rectangle (10,10);
+\draw [fill=cyan,cyan] (3,1) rectangle (10,10);
+
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+
+   
+      \onslide<4>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+\draw [fill=cyan,cyan] (1,3) rectangle (10,10);
+\draw [fill=cyan,cyan] (3,1) rectangle (10,10);
+
+
+\draw [line width=0.5mm,green] (1,3) -- (1,10);
+\draw [line width=0.5mm,green] (1,3) -- (3,3);
+\draw [line width=0.5mm,green] (3,3) -- (3,1);
+\draw [line width=0.5mm,green] (3,1) -- (10,1);
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+
+      \onslide<5>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+
+\draw [line width=0.5mm,green] (1,3) -- (1,10);
+\draw [line width=0.5mm,green] (1,3) -- (3,3);
+\draw [line width=0.5mm,green] (3,3) -- (3,1);
+\draw [line width=0.5mm,green] (3,1) -- (10,1);
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+     \onslide<6>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+
+\draw [line width=0.5mm,green] (1,3) -- (1,10);
+\draw [line width=0.5mm,green] (1,3) -- (3,3);
+\draw [line width=0.5mm,green] (3,3) -- (3,1);
+\draw [line width=0.5mm,green] (3,1) -- (10,1);
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+ 
+ 
+ \draw [fill=cyan,cyan] (2,8) rectangle (10,10);
+\draw [fill=cyan,cyan] (4,2) rectangle (10,10);
+
+
+\draw [line width=0.5mm,green] (2,8) -- (2,10);
+\draw [line width=0.5mm,green] (2,8) -- (4,8);
+\draw [line width=0.5mm,green] (4,8) -- (4,2);
+\draw [line width=0.5mm,green] (4,2) -- (10,2);
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (4,8) {};
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+
+
+
+
+     \onslide<7>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+
+
+\draw [line width=0.5mm,green] (2,8) -- (2,10);
+\draw [line width=0.5mm,green] (2,8) -- (4,8);
+\draw [line width=0.5mm,green] (4,8) -- (4,2);
+\draw [line width=0.5mm,green] (4,2) -- (10,2);
+ \draw [line width=0.5mm,green] (5,4) -- (5,10);
+\draw [line width=0.5mm,green] (5,4) -- (10,4);
+
+ \draw [line width=0.5mm,green] (8,6) -- (8,10);
+\draw [line width=0.5mm,green] (8,6) -- (10,6);
+\draw [line width=0.5mm,green] (1,3) -- (1,10);
+\draw [line width=0.5mm,green] (1,3) -- (3,3);
+\draw [line width=0.5mm,green] (3,3) -- (3,1);
+\draw [line width=0.5mm,green] (3,1) -- (10,1);
+
+\draw [line width=0.5mm,green] (6,7) -- (6,10);
+\draw [line width=0.5mm,green] (6,7) -- (7,7);
+\draw [line width=0.5mm,green] (7,5) -- (7,7);
+\draw [line width=0.5mm,green] (7,5) -- (10,5);
+
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (1,3) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (2,8) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (3,1) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (4,2) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (5,4) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (6,7) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (7,5) {};
+ \node[outer sep=0pt,circle, fill=red,inner sep=1.5pt] (P) at (8,6) {};
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (4,8) {};
+  \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (7,7) {};
+
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+$$\young(12456),\young(12568)$$
+
+
+
+
+     \onslide<8>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+
+
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (4,8) {};
+  \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (7,7) {};
+
+
+\end{axis}
+
+
+
+
+    \end{tikzpicture}
+\end{center}
+$$\young(12456),\young(12568)$$
+
+     \onslide<9>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+
+\draw [line width=0.5mm,green] (3,3) -- (3,10);
+\draw [line width=0.5mm,green] (3,3) -- (10,3);
+\draw [line width=0.5mm,green] (4,8) -- (4,10);
+\draw [line width=0.5mm,green] (4,8) -- (7,8);
+\draw [line width=0.5mm,green] (7,7) -- (7,8);
+\draw [line width=0.5mm,green] (7,7) -- (10,7);
+
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (3,3) {};
+ \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (4,8) {};
+  \node[outer sep=0pt,circle, fill=blue,inner sep=1.5pt] (P) at (7,7) {};
+  \node[outer sep=0pt,circle, fill=black,inner sep=1.5pt] (P) at (7,8) {};
+
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+$$\young(12456,37),\young(12568,34)$$
+
+     \onslide<10>
+     \begin{center}
+\begin{tikzpicture}    [/pgfplots/y=0.4cm, /pgfplots/x=0.4cm]
+      \begin{axis}[
+axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    xtick={0,1,2,3,3,4,5,6,7,8,9},
+    ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    anchor=origin,
+    grid style=dashed    ,
+]
+
+\draw [line width=0.5mm,green] (10,8) -- (7,8);
+\draw [line width=0.5mm,green] (7,10) -- (7,8);
+
+  \node[outer sep=0pt,circle, fill=black,inner sep=1.5pt] (P) at (7,8) {};
+
+
+\end{axis}
+
+    \end{tikzpicture}
+\end{center}
+$$\young(12456,37,8),\young(12568,34,7) , \quad \lambda(\sigma)=\yng(5,2,1)$$
+
+    \end{overprint} 
+
+\end{frame}
+
+
+
+\section{Cas uniforme}
+\begin{frame}{Plan}
+\tableofcontents[currentsection,currentsubsection,
+    hideothersubsections, 
+    sectionstyle=show/shaded,
+]
+\end{frame}
+\subsection{Conjecture d'Ulam}
+\begin{frame}{Conjecture d'Ulam}
+    \begin{conjecture}[\cite{ulam}]
+    Si $\sigma_n \sim {U}_{\mathfrak{S}_n}$, alors
+    $$\lim_{n\to \infty}\frac{\mathbb{E}(\ell(\sigma_n))}{\sqrt{n}}=c.$$ 
+    \end{conjecture}
+    \vspace{4 mm}
+
+\begin{itemize}
+    \item Si $\sigma_n \sim {U}_{\mathfrak{S}_n}$ alors 
+    \begin{align*}
+    \mathbb{P}(\lambda)&=\frac{\#\{\text{paires de tableaux de Young de forme } \lambda\}}{C}\\&=\frac{dim(\lambda)^2}{\sum_{\mu\in \mathbb{Y}_n} dim( \mu)^2}=\frac{dim(\lambda)^2}{\# \mathfrak{S}_N}=\frac{dim(\lambda)^2}{n!} 
+    \end{align*}
+    \item Prouvé par \cite{vershik} ($c=2$).
+\end{itemize}
+
+
+\end{frame}
+
+\subsection{Théorème de Baik, Deift et Johannson}
+\begin{frame}{Théorème de Baik, Deift et Johannson}
+    \begin{theorem}[\cite*{Baik1999}] 
+Si $\sigma_n \sim U_{\mathfrak{S}_n}$ alors
+\begin{equation*} 
+\lim_{n \to \infty} \mathbb{P}\left(\frac{\ell(\sigma_n)-2\sqrt{n}}{n^\frac 16}\leq s\right)=F_2(s),
+\end{equation*}
+o\`u  $F_2$ est la fonction de répartition de la distribution de Tracy-Widom.
+\end{theorem}
+\vspace{10 mm}
+
+On parle "d'universalité":
+\begin{itemize}
+    \item Plus grande (petite) valeur propre de matrices aléatoires.
+    \item Modèles de particules comme le TASEP.        \item Dernier passage de percolation.
+
+\end{itemize}
+\end{frame}
+
+\subsection{Forme limite de Vershik-Kerov-Logan-Shepp}
+\begin{frame}{Notation Russe}
+\begin{itemize}
+    \item On fait une rotation du tableau par $\frac{3\pi}{4}$.
+    \item On regarde la fonction de hauteur complétée par $|x|$.
+    \item On note la fonction obtenue $L_\lambda$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Notation Russe}
+ \begin{figure}
+\centering
+\begin{tikzpicture}    [/pgfplots/y=0.42cm, /pgfplots/x=0.42cm]
+      \begin{axis}[
+    axis x line=center,
+    axis y line=center,
+    xmin=0, xmax=10,
+    ymin=0, ymax=10, clip=false,
+    ytick={0},
+	xtick={0},
+    minor xtick={0,1,2,3,3,4,5,6,7,8,9},
+    minor ytick={0,1,2,3,3,4,5,6,7,8,9},
+    grid=both,
+    legend pos=north west,
+    ymajorgrids=false,
+    xmajorgrids=false, anchor=origin,
+    grid style=dashed    , rotate around={45:(rel axis cs:0,0)}
+,
+]
+
+\addplot[
+    color=blue,
+        line width=3pt,
+    ]
+    coordinates {
+    (0,10)(0,5)(1,5)(1,2)(2,2)(2,1)(3,1)(3,0)(10,0)
+    };
+ 
+\end{axis}
+\begin{axis}[
+	axis x line=center,
+    axis y line=center,
+    xmin=-7.07, xmax=7.07,
+    ymin=0, ymax=8, anchor=origin, clip=false,
+    xtick={-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7},
+    ytick={0,1,2,3,3,4,5,6,7,8},
+    legend pos=north west,
+    ymajorgrids=false,
+    xmajorgrids=false,rotate around={0:(rel axis cs:0,0)},
+    grid style=dashed];
+\end{axis}
+    \end{tikzpicture}
+    \caption{ $L_{(5,2,1,\underline{0})}$}
+     \label{figL}
+\end{figure} 
+\end{frame}
+
+\begin{frame}{Forme limite de Vershik-Kerov-Logan-Shepp}
+    \begin{theorem}[\cite{vershik,LOGAN}]
+    Si $\sigma_n \sim U_{\mathfrak{S}_n}$, alors pour tout $\varepsilon>0$,
+\begin{align*}
+\lim_{n\to \infty} \mathbb{P}\left(\sup_{s\in \mathbb{R}} \left|\frac{1}{\sqrt{2n}}L_{\lambda(\sigma_n)}\left({s}{\sqrt{2n}}\right)-\Omega(s)\right|<\varepsilon\right) =1,
+\end{align*}
+où
+\begin{align*}
+\Omega(s):=\begin{cases}
+\frac{2}{\pi}(s\arcsin({s})+\sqrt{1-s^2}) & \text{ si } |s|<1 \\ 
+|s| & \text{ si } |s|\geq 1 
+\end{cases}.
+\end{align*}
+    \end{theorem}
+    \vspace{10 mm}
+
+    Il y a un lien entre $\Omega$ et la loi semi-circulaire de Wigner.
+\end{frame}
+\begin{frame}{Forme limite de Vershik-Kerov-Logan-Shepp}
+    \begin{figure}[ht]
+    \centering
+     \def\svgscale{.65}
+    \input{diag.pdf_tex}
+       
+
+    \caption{Illustration de la convergence de   Vershik-Kerov-Logan-Shepp}
+\end{figure}
+
+\end{frame}
+\section{Généralisations}
+\begin{frame}{Plan}
+\tableofcontents[currentsection,currentsubsection,
+    hideothersubsections, 
+    sectionstyle=show/shaded,
+]
+\end{frame}
+\subsection{Plus longue sous-suite croissante}
+\begin{frame}{Plus longue sous-suite croissante}
+    \begin{theorem}[\cite{sk}]
+Supposons que la suite de permutations aléatoires  $(\sigma_n)_{n\geq 1}$ satisfait:
+\begin{itemize}
+\item  Pour tout entier strictement positif $n$, pour toutes permutations  $\sigma,\rho \in \mathfrak{S}_n$,
+\begin{equation*}\label{h1}
+\mathbb{P}(\sigma_n=\sigma)=\mathbb{P}(\sigma_n=\rho^{-1}\sigma\rho).
+\end{equation*}
+\item Pour tout $\varepsilon>0$,
+\begin{equation*}\label{h2}
+\lim_{n\to \infty}\mathbb{P}\left(\frac{\#(\sigma_n)}{n^\frac 16 }>\varepsilon\right) =0.
+\end{equation*}
+\end{itemize}
+Alors pour tout  $s \in \mathbb{R}$,
+\begin{equation*} \label{TW} 
+\lim_{n\to \infty} \mathbb{P}\left(\frac{\ell(\sigma_n)-2\sqrt{n}}{n^\frac 16}\leq s\right)=F_2(s).
+\end{equation*}
+\end{theorem}
+\end{frame}
+\subsection{Forme limite de Vershik-Kerov-Logan-Shepp}
+ \begin{frame}{Forme limite}
+    \begin{theorem}[\cite{sk}]
+Supposons que la suite de permutations aléatoires  $(\sigma_n)_{n\geq 1}$ satisfait:
+\begin{itemize}
+\item  Pour tout entier strictement positif $n$, pour toutes permutations  $\sigma,\rho \in \mathfrak{S}_n$,
+\begin{equation*}
+\mathbb{P}(\sigma_n=\sigma)=\mathbb{P}(\sigma_n=\rho^{-1}\sigma\rho).
+\end{equation*}
+\item Pour tout $\varepsilon>0$,
+\begin{equation*}
+\lim_{n\to \infty}\mathbb{P}\left(\frac{\#(\sigma_n)}{n} >\varepsilon\right) =0.
+\end{equation*}
+\end{itemize}
+Alors pour  tout  $\varepsilon>0$,
+\begin{align*}
+\lim_{n\to \infty} \mathbb{P}\left(\sup_{s\in \mathbb{R}} \left|\frac{1}{\sqrt{2n}}L_{\lambda(\sigma_n)}\left({s}{\sqrt{2n}}\right)-\Omega(s)\right|<\varepsilon\right) =1.
+\end{align*}
+\end{theorem}
+\end{frame}
+\subsection{Cas particulier: Ewens} 
+\begin{frame}{Exemple d'application : Ewens}
+\begin{definition}[Loi d'Ewens]
+Soit $\theta\geq 0$. On dit que $\sigma_n\sim Ew(\theta)$ si  
+\begin{equation*}
+\mathbb{P}(\sigma_n=\sigma)=\frac{\theta^{\#(\sigma)-1}}{\prod_{k=1}^{n-1}(\theta+k)}.\end{equation*}
+\end{definition}
+\vspace{5 mm}
+
+\begin{itemize}
+\item $\theta$ :  taux de mutation.
+\item Un cycle = type d'allèles. 
+\item Structure logarithmique : $$\mathbb{E}(\#(\sigma_n))= 1+\sum_{k=1}^{n-1} \frac{\theta}{\theta+k}\sim \theta \log(n).$$
+\end{itemize}
+\end{frame}
+\begin{frame}{Idée de la preuve}
+    \begin{lemma}
+Si $\sigma_n$ est une permutation aléatoire stable sous conjugaison, il existe une permutation aléatoire $\sigma'_n$ vérifiant.
+\begin{itemize}
+    \item $\sigma'_n \sim Ew(0)$
+    \item Presque sûrement, 
+    \begin{equation*}
+    |\ell(\sigma'_n)-\ell(\sigma_n)|\leq 2(\#(\sigma_n-1)).
+    \end{equation*}
+    
+\end{itemize}
+\end{lemma}
+\end{frame}
+
+\begin{frame}{Références}
+\tiny
+
+\bibliographystyle{abbrvnat}
+    \bibliography{test}
+
+\end{frame}
+\begin{frame}
+
+  \begin{columns}
+    \begin{column}{0.70\textwidth}
+      \begin{center}
+      \begin{figure}[ht]
+    \centering
+        \def\svgwidth{\columnwidth}
+    \input{diag.pdf_tex}
+\end{figure}
+
+      \end{center}
+    \end{column}
+    \begin{column}{0.30\textwidth}
+      \begin{center}
+
+        \font\endfont = cmss10 at 5.40mm
+\color[rgb]{0.00,0.00,1.00}       \endfont 
+        \baselineskip 7.0mm
+
+        Merci de votre attention
+
+      \end{center}    
+
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+
+\end{document}
